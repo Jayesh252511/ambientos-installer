@@ -65,7 +65,7 @@ export function Dropzone({
     const path = `${sessionId}/${step}-${Date.now()}.${ext}`;
     const { error: upErr } = await supabase.storage
       .from("verification-screenshots")
-      .upload(path, file, { upsert: true, contentType: file.type });
+      .upload(path, file, { upsert: false, contentType: file.type });
     if (upErr) {
       setBusy(false);
       setStage("idle");

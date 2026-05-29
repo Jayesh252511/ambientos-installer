@@ -125,6 +125,21 @@ function Index() {
             A weightless desktop overlay that whispers your calendar, mail and creator stats through translucent pink paper planes — never another popup.
           </p>
 
+          {/* Live Desktop Preview Graphic */}
+          <div className="mx-auto mt-8 max-w-2xl overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] p-2 transition hover:scale-[1.01] hover:border-[var(--cyberpink)]/40 hover:shadow-[0_0_30px_rgba(255,46,147,0.15)]">
+            <div className="relative overflow-hidden rounded-xl border border-white/5">
+              <img src="/live_preview.png" alt="AmbientOS Live Preview" className="w-full object-cover opacity-95" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0C0E14] via-transparent to-transparent" />
+              <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-left">
+                <div>
+                  <p className="text-sm font-semibold text-white">AmbientOS in Action</p>
+                  <p className="text-xs text-muted-foreground">Elegant notifications glide directly over your active windows in real-time.</p>
+                </div>
+                <span className="rounded-full bg-white/10 px-2 py-0.5 text-[10px] text-white font-medium uppercase tracking-wider">Desktop HUD Overlay</span>
+              </div>
+            </div>
+          </div>
+
           {/* Progress */}
           <div className="mx-auto mt-8 max-w-md">
             <div className="mb-2 flex items-center justify-between text-xs text-muted-foreground">
