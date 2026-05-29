@@ -27,6 +27,13 @@ export const verifyScreenshot = createServerFn({ method: "POST" })
       let rawText = "";
 
       if (useUserKey) {
+        // Fetch image and convert to Base64 since Gemini generateContent API does not support raw external HTTP URLs in file_data
+        const imgResp = await fetch(data.imageUrl);
+        if (!imgResp.ok) throw new Error(`Failed to download screenshot: ${imgResp.statusText}`);
+        const arrayBuffer = await imgResp.arrayBuffer();
+        const base64Data = Buffer.from(arrayBuffer).toString("base64");
+        const mimeType = data.imageUrl.endsWith(".png") ? "image/png" : "image/jpeg";
+
         const resp = await fetch(
           `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${encodeURIComponent(
             data.userApiKey!.trim(),
@@ -40,7 +47,7 @@ export const verifyScreenshot = createServerFn({ method: "POST" })
                   role: "user",
                   parts: [
                     { text: instruction },
-                    { file_data: { mime_type: "image/png", file_uri: data.imageUrl } },
+                    { inline_data: { mime_type: mimeType, data: base64Data } },
                   ],
                 },
               ],
