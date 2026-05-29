@@ -163,6 +163,7 @@ function Index() {
                 step="step1"
                 hint="Looking for: AmbientOS launcher GUI · PowerShell/Electron running · pink paper-plane overlays."
                 onVerified={(url) => markStep(1, url)}
+                isActive={step1State === "active"}
               />
             </div>
           </StepCard>
@@ -199,6 +200,7 @@ function Index() {
                 step="step2"
                 hint="Looking for: 'Connected Successfully' page · green checkmark · Google consent screen for AmbientOS scopes."
                 onVerified={(url) => markStep(2, url)}
+                isActive={step2State === "active"}
               />
             </div>
           </StepCard>

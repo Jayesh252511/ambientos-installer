@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
-import { Upload, Loader2, ShieldAlert, ShieldCheck, ImageIcon } from "lucide-react";
+import { useRef, useState, useEffect } from "react";
+import { Upload, Loader2, ShieldAlert, ShieldCheck, ImageIcon, Clipboard } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useServerFn } from "@tanstack/react-start";
 import { verifyScreenshot } from "@/lib/verify.functions";
@@ -11,10 +11,12 @@ export function Dropzone({
   step,
   hint,
   onVerified,
+  isActive = true,
 }: {
   step: "step1" | "step2";
   hint: string;
   onVerified: (imageUrl: string) => Promise<void> | void;
+  isActive?: boolean;
 }) {
   const verifyFn = useServerFn(verifyScreenshot);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -23,6 +25,31 @@ export function Dropzone({
   const [preview, setPreview] = useState<string | null>(null);
   const [result, setResult] = useState<VerifyResult>(null);
   const [drag, setDrag] = useState(false);
+
+  // Direct Clipboard Paste (Ctrl+V) Listener
+  useEffect(() => {
+    if (!isActive) return;
+
+    function handlePaste(e: ClipboardEvent) {
+      if (busy) return;
+      const items = e.clipboardData?.items;
+      if (!items) return;
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf("image") !== -1) {
+          const file = items[i].getAsFile();
+          if (file) {
+            handleFile(file);
+            break;
+          }
+        }
+      }
+    }
+
+    window.addEventListener("paste", handlePaste);
+    return () => {
+      window.removeEventListener("paste", handlePaste);
+    };
+  }, [busy, step, isActive]);
 
   async function handleFile(file: File) {
     if (!file.type.startsWith("image/")) {
@@ -110,7 +137,7 @@ export function Dropzone({
                 ? stage === "uploading"
                   ? "Uploading screenshot…"
                   : "AI analyzing your screenshot…"
-                : "Drop screenshot here or click to browse"}
+                : "Drop or paste (Ctrl+V) screenshot here, or click to browse"}
             </p>
             <p className="mx-auto mt-1.5 max-w-md text-xs leading-relaxed text-muted-foreground">{hint}</p>
           </>
