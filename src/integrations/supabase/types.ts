@@ -14,7 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      installation_states: {
+        Row: {
+          created_at: string
+          id: string
+          session_id: string
+          step_1_completed: boolean
+          step_1_screenshot_url: string | null
+          step_2_completed: boolean
+          step_2_screenshot_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          session_id: string
+          step_1_completed?: boolean
+          step_1_screenshot_url?: string | null
+          step_2_completed?: boolean
+          step_2_screenshot_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          session_id?: string
+          step_1_completed?: boolean
+          step_1_screenshot_url?: string | null
+          step_2_completed?: boolean
+          step_2_screenshot_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
